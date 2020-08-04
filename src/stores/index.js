@@ -11,6 +11,9 @@ export default new Vuex.Store({
   actions: {
     async getAllReportActive () {
       return axios.get(URL + 'get-all-report-active')
+    },
+    async getReportTicket () {
+      return axios.get(URL + 'get-report-ticket')
     }
   }
 
