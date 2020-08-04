@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import IframeReport from '@/components/'
+import IframeReport from '@/components/IframeReport'
 export default {
   name: 'App',
   components: {

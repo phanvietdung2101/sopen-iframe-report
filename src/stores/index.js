@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
   },
   actions: {
-    getAllReportActive () {
+    async getAllReportActive () {
       return axios.get(URL + 'get-all-report-active')
     }
   }
