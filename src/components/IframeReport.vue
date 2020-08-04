@@ -47,28 +47,36 @@ export default {
     },
     async generateReportUrl () {
       if (this.selectedReportCode === '') {
-        this.$set(this, 'alertMessage', 'Please select a report')
+        this.alertMessage = 'Please select a report'
         throw new Error('No report code selected')
       }
       await this.getTicket()
       this.generatedUrl = `${URL}/${this.selectedReportCode}/${this.reportTicket}`
     }
   },
-  mounted () {
-    this.getAllReportActive().then((response) => {
-      this.$set(this, 'allReportActive', response.data.data)
-    })
+  async mounted () {
+    await this.getAllReportActive()
+      .then(response => {
+        this.$set(this, 'allReportActive', response.data.data)
+      })
+      .catch((error) => {
+        console.log(error)
+        this.alertMessage = error.message
+      })
   }
 }
 </script>
 
 <style scoped>
 iframe {
+  overflow: hidden;
   margin-top: 5px;
   display: block;
   width: 100%;
+  height: 100%;
   border: none;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
+  position: absolute;
 }
 </style>
