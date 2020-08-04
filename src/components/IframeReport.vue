@@ -1,6 +1,6 @@
 <template>
   <div id="iframe-report">
-    <el-select v-model="selectedReportCode" placeholder="Select">
+    <el-select v-model="selectedReportCode" placeholder="Select report">
       <el-option
         v-for="item in allReportActive"
         :key="item.reportCode"
