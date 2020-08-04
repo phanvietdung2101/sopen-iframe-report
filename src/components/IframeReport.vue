@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="iframe-report">
     <el-select v-model="selectedReportCode" placeholder="Select">
       <el-option
         v-for="item in allReportActive"
@@ -8,9 +8,10 @@
         :value="item.reportCode"
       ></el-option>
     </el-select>
-    <button @click.prevent="generateReportUrl">Comfirm</button>
-    <p v-if="generatedUrl !== ''">URL: {{ generatedUrl }} </p>
-    <!-- <iframe :src="reportUrl"></iframe> -->
+    <el-button type="primary" @click.prevent="generateReportUrl" plain>Comfirm</el-button>
+    <el-alert v-show="alertMessage" v-bind:title="alertMessage" type="error"></el-alert>
+    <p v-show="generatedUrl !== ''">URL: {{ generatedUrl }}</p>
+    <iframe v-show="generatedUrl !== ''" :src="generatedUrl"></iframe>
   </div>
 </template>
 
@@ -26,41 +27,48 @@ export default {
       selectedReportCode: '',
       allReportActive: [],
       reportTicket: '',
-      generatedUrl: ''
+      generatedUrl: '',
+      alertMessage: ''
     }
   },
   methods: {
     ...mapActions(['getAllReportActive', 'getReportTicket']),
     async getTicket () {
-      // const waitReportTicket = await this.getReportTicket()
       await this.getReportTicket()
-        .then(response => {
+        .then((response) => {
           console.log(response)
           if (response.data.message === 'SUCCESS') {
-            this.reportTicket = response.data.data
+            this.$set(this, 'reportTicket', response.data.data)
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
     async generateReportUrl () {
+      if (this.selectedReportCode === '') {
+        this.$set(this, 'alertMessage', 'Please select a report')
+        throw new Error('No report code selected')
+      }
       await this.getTicket()
-      if (this.selectedReportCode === '') throw new Error('Please select a report code')
       this.generatedUrl = `${URL}/${this.selectedReportCode}/${this.reportTicket}`
     }
   },
   mounted () {
-    this.getAllReportActive()
-      .then(response => {
-        this.allReportActive = response.data.data
-      })
+    this.getAllReportActive().then((response) => {
+      this.$set(this, 'allReportActive', response.data.data)
+    })
   }
 }
 </script>
 
 <style scoped>
 iframe {
+  margin-top: 5px;
+  display: block;
   width: 100%;
+  border: none;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

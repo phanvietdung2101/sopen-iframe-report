@@ -16,5 +16,4 @@ export default new Vuex.Store({
       return axios.get(URL + 'get-report-ticket')
     }
   }
-
 })
