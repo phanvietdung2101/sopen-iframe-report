@@ -18,7 +18,7 @@
 <script>
 import { mapActions } from 'vuex'
 
-const URL = 'http://192.168.1.9:9528/bierp-embed'
+const URL = 'http://192.168.1.40:9528/bierp-embed'
 
 export default {
   name: 'iframe-report',
