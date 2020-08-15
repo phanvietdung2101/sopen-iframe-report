@@ -9,7 +9,6 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitServer">Get report list</el-button>
-        <el-button>Cancel</el-button>
       </el-form-item>
     </el-form>
     <el-select v-model="selectedReportCode" placeholder="Select report">
