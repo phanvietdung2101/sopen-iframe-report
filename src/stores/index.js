@@ -8,11 +8,13 @@ export default new Vuex.Store({
   state: {
   },
   actions: {
-    async getAllReportActive (serverUrl) {
-      return axios.get(serverUrl + 'get-all-report-active')
+    getAllReportActive (obj, serverUrl) {
+      const url = 'http://' + serverUrl + '/api/v1/bierp-embed/'
+      return axios.get(url + 'get-all-report-active')
     },
-    async getReportTicket (serverUrl) {
-      return axios.get(serverUrl + 'get-report-ticket')
+    getReportTicket (obj, serverUrl) {
+      const url = 'http://' + serverUrl + '/api/v1/bierp-embed/'
+      return axios.get(url + 'get-report-ticket')
     }
   }
 })

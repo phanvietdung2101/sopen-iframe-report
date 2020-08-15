@@ -2,10 +2,16 @@
   <div id="iframe-report">
     <el-form label-width="120px">
       <el-form-item label="Server address">
-        <el-input v-model="serverUrl"></el-input>
+        <el-input v-model="serverUrl">
+          <template slot="prepend">http://</template>
+          <template slot="append">/api/v1/bierp-embed</template>
+        </el-input>
       </el-form-item>
       <el-form-item label="View address">
-        <el-input v-model="viewUrl"></el-input>
+        <el-input v-model="viewUrl">
+          <template slot="prepend">http://</template>
+          <template slot="append">/bierp-embed</template>
+        </el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitServer">Get report list</el-button>
@@ -38,13 +44,14 @@ export default {
       reportTicket: '',
       generatedUrl: '',
       alertMessage: '',
-      viewUrl: 'http://192.168.1.40:9528/bierp-embed',
-      serverUrl: 'http://192.168.1.40:24688/api/v1/bierp-embed/'
+      viewUrl: '192.168.1.40:9528',
+      serverUrl: '192.168.1.40:24688'
     }
   },
   methods: {
     ...mapActions(['getAllReportActive', 'getReportTicket']),
     submitServer () {
+      console.log(this.serverUrl)
       this.getAllReportActive(this.serverUrl)
         .then((response) => {
           this.$set(this, 'allReportActive', response.data.data)
@@ -72,7 +79,7 @@ export default {
         throw new Error('No report code selected')
       }
       await this.getTicket()
-      this.generatedUrl = `${this.viewUrl}/${this.selectedReportCode}/${this.reportTicket}`
+      this.generatedUrl = `https://${this.viewUrl}/bierp-embed/${this.selectedReportCode}/${this.reportTicket}`
     }
   }
 }
