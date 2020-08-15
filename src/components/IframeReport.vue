@@ -1,5 +1,17 @@
 <template>
   <div id="iframe-report">
+    <el-form label-width="120px">
+      <el-form-item label="Server address">
+        <el-input v-model="serverUrl"></el-input>
+      </el-form-item>
+      <el-form-item label="View address">
+        <el-input v-model="viewUrl"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitServer">Get report list</el-button>
+        <el-button>Cancel</el-button>
+      </el-form-item>
+    </el-form>
     <el-select v-model="selectedReportCode" placeholder="Select report">
       <el-option
         v-for="item in allReportActive"
@@ -18,8 +30,6 @@
 <script>
 import { mapActions } from 'vuex'
 
-const URL = 'http://192.168.1.40:9528/bierp-embed'
-
 export default {
   name: 'iframe-report',
   data () {
@@ -28,13 +38,25 @@ export default {
       allReportActive: [],
       reportTicket: '',
       generatedUrl: '',
-      alertMessage: ''
+      alertMessage: '',
+      viewUrl: 'http://192.168.1.40:9528/bierp-embed',
+      serverUrl: 'http://192.168.1.40:24688/api/v1/bierp-embed/'
     }
   },
   methods: {
     ...mapActions(['getAllReportActive', 'getReportTicket']),
+    submitServer () {
+      this.getAllReportActive(this.serverUrl)
+        .then((response) => {
+          this.$set(this, 'allReportActive', response.data.data)
+        })
+        .catch((error) => {
+          console.log(error)
+          this.alertMessage = error.message
+        })
+    },
     async getTicket () {
-      await this.getReportTicket()
+      await this.getReportTicket(this.serverUrl)
         .then((response) => {
           console.log(response)
           if (response.data.message === 'SUCCESS') {
@@ -51,18 +73,8 @@ export default {
         throw new Error('No report code selected')
       }
       await this.getTicket()
-      this.generatedUrl = `${URL}/${this.selectedReportCode}/${this.reportTicket}`
+      this.generatedUrl = `${this.viewUrl}/${this.selectedReportCode}/${this.reportTicket}`
     }
-  },
-  async mounted () {
-    await this.getAllReportActive()
-      .then(response => {
-        this.$set(this, 'allReportActive', response.data.data)
-      })
-      .catch((error) => {
-        console.log(error)
-        this.alertMessage = error.message
-      })
   }
 }
 </script>
