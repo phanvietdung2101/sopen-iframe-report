@@ -9,11 +9,11 @@ export default new Vuex.Store({
   },
   actions: {
     getAllReportActive (obj, serverUrl) {
-      const url = 'http://' + serverUrl + '/api/v1/bierp-embed/'
+      const url = serverUrl + '/api/v1/bierp-embed/'
       return axios.get(url + 'get-all-report-active')
     },
     getReportTicket (obj, serverUrl) {
-      const url = 'http://' + serverUrl + '/api/v1/bierp-embed/'
+      const url = serverUrl + '/api/v1/bierp-embed/'
       return axios.get(url + 'get-report-ticket')
     }
   }
